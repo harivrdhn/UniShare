@@ -1,3 +1,10 @@
+Requirements:
+
+1. Python 2.7.x
+2. MongoDB
+3. Bottle micro-framework
+4. PyMongo installation
+
 To run the server:
 
 1. Extract the whole RAR file into Python27 folder.
