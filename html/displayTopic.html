@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+<script type="text/javascript">
+window.onload = function(){
+		
+		topicId = window.location.pathname.toString().split("/")[3];
+		newUrl = "http://localhost:8080/topics/"+topicId;
+		$.ajax({
+		        type: "GET",
+		        url: newUrl,
+		        success: function(jsonObj) {
+				<!--jsonObj= JSON.parse(msg);-->
+
+				for ( var i = 0; i < 1; i++) {
+					$('#data').append('<tr><td id="topicName" style="width: 200px;padding-top: 30px;padding-left: 20px">Topic Name</td><td>'+jsonObj.topicName
+							+'</td></tr><tr><td id="description" style="width: 200px;padding-top: 20px;padding-left: 20px">Description:</td><td>'+jsonObj.desc
+							+'</td></tr><tr><td id="author"  style="width: 200px;padding-top: 20px;padding-left: 20px">Author:</td><td id="author">'+jsonObj.author
+							+'</td></tr>');
+
+			}
+
+				if(jsonObj.comments){
+				for ( var i = 0; i < jsonObj.comments.length; i++) {
+					$('#topics').append('<tr><td style="padding-left: 20px">'+jsonObj.comments[i].comment
+							+'</td><td style="padding-left: 20px">'+jsonObj.comments[i].author
+							+'</td></tr>');
+
+				} 
+			}
+		       }
+		  });
+};
+$(document).ready(function() {
+$('#submit').click(function(){
+		
+		jsonStrin = "";
+
+		        var cauthorIn = document.getElementById("cauthorIn").value;
+		        var commentIn = document.getElementById("commentIn").value;
+
+		    jsonString= "{\"author\": \""+cauthorIn+"\", \"comment\": \""+commentIn+"\"}";
+
+		commurl="http://localhost:8080/topics/"+topicId+"/comments";
+		
+		$.ajax({
+			async: false,
+		        type: "POST",
+		        url: commurl,
+		        data: jsonString,
+			success: window.location.href = "/html/display/"+topicId
+		       
+		  });
+	});
+});
+</script>
+<head>
+<title>UniShare - Sharing throughout the University</title>
+<style type="text/css">
+body {
+	font-family:verdana,arial,sans-serif;
+	font-size:10pt;
+	margin:30px;
+	background-color:#FFFAF0;
+	}
+</style>
+</head>
+<body>
+<!-- Displaying new topic -->
+<center>
+<h2>UniShare</h2>
+<h5>Sharing throughout the University</h5>
+<h3><table id="data">
+</table></h3>
+<table border=0 id="topics">
+	<tr>
+		<td  style="width: 500px;padding-left: 20px"><b>Comment</b></td>
+		<td  style="width: 300px;padding-left: 20px"><b>Author</b></td>		
+	</tr>
+</table>
+</center>
+<!-- Creating new topic -->
+<center>
+<h4>Enter your comments:</h4>
+<table>
+                <tr>
+                    <td style="width: 100px;padding-top: 20px;padding-left: 20px"><b>Your Comment:</b></td>
+                    <td style="padding-top: 20px">
+                        <input type="textfield" name="commentIn" id="commentIn">   
+                    </td>                    
+                </tr>
+		<tr>
+                    <td style="width: 100px;padding-top: 30px;padding-left: 20px"><b>Name:</b></td>
+                    <td style="padding-top: 30px;padding-right: 30px">
+                        <input type="text" name="cauthorIn" id="cauthorIn">  
+                    </td>
+                </tr>
+                <tr >
+                    <td style="padding-top: 20px"></td>
+                    <td style="padding-top: 20px">
+                    	<input type="submit" value="Submit" id="submit">
+                    </td>
+                </tr>
+		<tr >
+                    <td style="padding-top: 20px"></td>
+                    <td style="padding-top: 20px">
+                    	<a href="/index"><input type="button" value="Back" id="back"></a>
+                    </td>
+                </tr>
+                             
+            </table>
+</center>
+
+</body>
+</html>

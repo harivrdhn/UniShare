@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+<script type="text/javascript">
+window.onload = function(){
+
+		$.ajax({
+		        type: "GET",
+		        url: "http://localhost:8080/topics",
+		        success: function(msg) {
+				jsonObj= JSON.parse(msg);
+
+				for ( var i = 0; i < jsonObj.length; i++) {
+					j=i+1;
+					$('#topics').append('<tr><td style="padding-left: 20px">'+j
+							+'</td><td style="padding-left: 20px"><a href="/html/display/'+jsonObj[i]._id+'">'+jsonObj[i].topicName
+							+'</a></td><td style="padding-left: 20px">'+jsonObj[i]._id
+							+'</td><td style="padding-left: 20px">'+jsonObj[i].author
+							+'</td></tr>');
+
+				} 
+			}
+		       
+		  });
+};
+
+$(document).ready(function() {
+
+	$('#submit').click(function(){
+		
+		jsonStrin = "";
+
+		        var authorIn = document.getElementById("authorIn").value;
+		        var topicNameIn = document.getElementById("topicNameIn").value;
+		        var descIn = document.getElementById("descIn").value;
+		    
+
+		    jsonString= "{\"topicName\": \""+topicNameIn+"\", \"desc\": \""+descIn+"\", \"author\": \""+authorIn+"\"}";
+
+		$.ajax({
+		        type: "POST",
+		        url: "http://localhost:8080/topics",
+		        data: jsonString,
+			success: function(){
+				window.location.href = "index"
+			}
+		       
+		  });
+	});
+});
+</script>
+<head>
+<title>UniShare - Sharing throughout the University</title>
+<style type="text/css">
+body {
+	font-family:verdana,arial,sans-serif;
+	font-size:10pt;
+	margin:30px;
+	background-color:#FFFAF0;
+	}
+</style>
+</head>
+<body>
+<!-- Displaying new topic -->
+<center>
+<h3>UniShare</h3>
+<h5>Sharing throughout the University</h5>
+<table border=0 id="topics">
+	<tr>
+		<td  style="width: 50px;padding-left: 20px"><b>S.No.</b></td>
+		<td  style="width: 500px;padding-left: 20px"><b>Topic Name</b></td>
+		<td  style="width: 100px;padding-left: 20px"><b>ID</b></td>
+		<td  style="width: 300px;padding-left: 20px"><b>Author</b></td>		
+	</tr>
+</table>
+</center>
+<!-- Creating new topic -->
+<center>
+<table>
+                <tr>
+                    <td style="width: 100px;padding-top: 20px;padding-left: 20px"><b>Topic Name:</b></td>
+                    <td style="padding-top: 20px">
+                        <input type="text" name="topicNameIn" id="topicNameIn">   
+                    </td>                    
+                </tr>
+                <tr>
+                    <td style="width: 100px;padding-top: 20px;padding-left: 20px"><b>Description:</b></td>
+                    <td style="padding-top: 20px">
+                        <input type="text" name="descIn" id="descIn">
+                    </td>                    
+                </tr>
+		<tr>
+                    <td style="width: 100px;padding-top: 30px;padding-left: 20px"><b>Author:</b></td>
+                    <td style="padding-top: 30px;padding-right: 30px">
+                        <input type="text" name="authorIn" id="authorIn">  
+                    </td>
+                </tr>
+                <tr >
+                    <td style="padding-top: 20px"></td>
+                    <td style="padding-top: 20px">
+                    	<input type="submit" value="Submit" id="submit">
+                    </td>
+                </tr>
+		<tr >
+                    <td style="padding-top: 20px"></td>
+                    <td style="padding-top: 20px">
+                    	<a href="/deletion"><input type="button" value="Click here to delete topics!" id="delete">
+                    </td>
+                </tr>                             
+            </table>
+</center>
+
+</body>
+</html>
